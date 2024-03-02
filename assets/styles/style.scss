@@ -1,0 +1,17 @@
+@import "./fonts.scss";
+@import "./variables.scss";
+
+* {
+    font-family: 'OpenSans';
+    word-break: break-word;
+
+    .danger {
+        color: #EE4222;
+    }
+}
+
+.ellipsis-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

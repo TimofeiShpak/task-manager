@@ -1,0 +1,32 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "predeploy": "nuxt generate",
+    "deploy": "gh-pages -d dist --dotfiles",
+    "dev:dark": "npm run dev --theme=dark"
+  },
+  "devDependencies": {
+    "nuxt": "^3.9.3",
+    "nuxt-quasar-ui": "^2.0.7",
+    "sass": "^1.70.0",
+    "vite-plugin-svg-sprite": "^0.5.1",
+    "vue": "^3.4.14",
+    "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@nuxtjs/svg-sprite": "^1.0.2",
+    "@pinia/nuxt": "^0.5.1",
+    "@quasar/extras": "^1.16.9",
+    "mongoose": "^8.1.1",
+    "nuxt-mongoose": "^1.0.5",
+    "pinia": "^2.1.7",
+    "quasar": "^2.14.3"
+  }
+}
