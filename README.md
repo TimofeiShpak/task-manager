@@ -22,7 +22,7 @@ npm run dev
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
-Demo: https://vercel.com/timofeishpak/vue-learn/6fxjYappK6xJkknAPj7ZSCNpRzKP
+Demo: https://vue-learn-hpw9ka4ay-timofeishpak.vercel.app
 To view the demo, you will have to register on Vercel. This is a website for free hosting of applications written in Nuxt.
 My application also has authorization. Login information (if you do not want to register):
 login 1
