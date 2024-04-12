@@ -42,7 +42,7 @@ import { TYPE_SORT, ATTRIBUTE_SORT } from "~/helpers/constants";
 
 export default {
     props: {
-        value: Object,
+        value: Object as any,
         labelKey: {
             type: String,
             default: "name",
@@ -60,9 +60,9 @@ export default {
     },
     data() {
         return {
-            items: [],
+            items: [] as Array<any>,
             total: 0,
-            searchText: null,
+            searchText: "",
             page: 0,
             limit: 5,
             isLoading: true,
@@ -74,7 +74,7 @@ export default {
             get() {
                 return this.value;
             },
-            set(value) {
+            set(value: any) {
                 this.$emit("select", value);
             },
         },
@@ -98,10 +98,10 @@ export default {
                 limit: this.limit,
             };
             return this.funcApi(dto)
-                .then((data) => {
+                .then((data: any) => {
                     if (data && data.response) {
                         this.items = this.items.concat(
-                            (data.response.data || []).map((x) => {
+                            (data.response.data || []).map((x: any) => {
                                 return {
                                     ...x,
                                     label: x[this.labelKey],
@@ -116,14 +116,15 @@ export default {
                     this.isLoading = false;
                 });
         },
-        onSelect(value) {
-            this.$refs.select.hidePopup();
+        onSelect(value: any) {
+            const select = this.$refs.select as any
+            select.hidePopup();
             this.model = value;
         },
-        hasSlot(name) {
+        hasSlot(name: string) {
             return !!this.$slots[name];
         },
-        onScroll(value) {
+        onScroll(value: any) {
             let canGetElse =
                 !this.isLoading &&
                 value.index + 1 === this.items.length &&
@@ -133,12 +134,14 @@ export default {
                 this.getList();
             }
         },
-        checkByRules(val) {
+        checkByRules(val: any) {
             if (this.isRules) {
                 return !!(val && val[this.valueKey]) || "Please type something";
+            } else {
+                return true
             }
         },
-        activeClass(val) {
+        activeClass(val: any) {
             const value = this.value && this.value[this.valueKey];
             if (value === val[this.valueKey]) {
                 return "active-option";
@@ -148,7 +151,8 @@ export default {
             if (!this.isFirstOpened) {
                 this.isFirstOpened = true;
                 this.getList().then(() => {
-                    this.$refs.select.showPopup();
+                    const select = this.$refs.select as any
+                    select.showPopup();
                 });
             }
         },

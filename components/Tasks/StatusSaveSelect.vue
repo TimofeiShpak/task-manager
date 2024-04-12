@@ -10,28 +10,32 @@
 <script lang="ts">
 import { STATUS_TYPE_NAME } from "~/helpers/constants";
 import { mapState } from "pinia";
+import type { PropType } from "vue"
+import type { Task, Status } from "~/helpers/types"
 
 export default {
     props: {
-        task: Object,
+        task: {
+            type: Object as PropType<Task> | PropType<null>,
+        },
     },
     data() {
         return {
-            status: null,
+            status: null as Status | null,
         };
     },
     computed: {
         ...mapState(useStore, ["currentUser"]),
     },
     methods: {
-        onSelect(value) {
+        onSelect(value: Status) {
             this.status = value;
             let dto = {
                 status: this.status.value,
-                id: this.task.id,
+                id: this.task?.id,
                 editor: this.currentUser.id,
             };
-            Utils.fetchApi.tasks.edit(dto).then((data) => {
+            Utils.fetchApi.tasks.edit(dto).then((data: { response: Status }) => {
                 if (data && data.response) {
                     this.$emit("updateStatus", data.response);
                 }
@@ -39,7 +43,7 @@ export default {
         },
     },
     mounted() {
-        if (this.task.status) {
+        if (this.task && this.task.status) {
             this.status = {
                 value: this.task.status,
                 label: STATUS_TYPE_NAME[this.task.status],

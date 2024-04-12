@@ -29,7 +29,7 @@ export default {
             this.$emit("input", false);
             this.$emit("confirm");
         },
-        hasSlot(name) {
+        hasSlot(name: string) {
             return !!this.$slots[name];
         },
     },

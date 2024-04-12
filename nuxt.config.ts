@@ -26,7 +26,11 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'nuxt-mongoose',
     'nuxt-quasar-ui',
+    'nuxt-lodash',
   ],
+  lodash: {
+    prefixSkip: false,
+  },
   runtimeConfig: {
     mongoUrl: 'mongodb+srv://admin:Hora1234@cluster0.ouwqb.mongodb.net/nuxt?retryWrites=true&w=majority',
   },
@@ -43,4 +47,7 @@ export default defineNuxtConfig({
       ]
     }
   },
+  typescript: {
+    typeCheck: true
+  }
 })

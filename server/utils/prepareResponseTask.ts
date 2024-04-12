@@ -1,4 +1,4 @@
-export const prepareTaskData = (data) => {
+export const prepareTaskData = (data: any) => {
     if (data) {
         return {
             id: data._id,

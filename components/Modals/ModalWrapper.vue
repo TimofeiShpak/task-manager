@@ -53,7 +53,7 @@ export default {
             get() {
                 return this.isOpen;
             },
-            set(value) {
+            set(value: boolean) {
                 this.$emit("input", value);
             },
         },

@@ -1,11 +1,15 @@
 import type { EventHandler, EventHandlerRequest } from 'h3'
 
+interface Response {
+    isError: boolean;
+}
+
 export const defineWrappedResponseHandler = <T extends EventHandlerRequest, D>(
     handler: EventHandler<T, D>
 ): EventHandler<T, D> =>
     defineEventHandler<T>(async event => {
         try {
-            const response = await handler(event);
+            const response = await handler(event) as Response;
             if (!(response && response.isError)) {
                 return { response }
             } else {

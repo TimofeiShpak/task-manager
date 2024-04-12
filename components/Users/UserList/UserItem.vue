@@ -1,5 +1,5 @@
 <template>
-    <q-item clickable @click="goToUser(false)">
+    <q-item clickable @click="goToUser()">
         <q-item-section avatar>
             <Avatar :user="user" />
         </q-item-section>
@@ -46,10 +46,15 @@
 
 <script lang="ts">
 import { mapState } from "pinia";
+import type { PropType } from "vue";
+import type { User } from "~/helpers/types";
 
 export default {
     props: {
-        user: Object,
+        user: {
+            type: Object as PropType<User>,
+            required: true
+        },
     },
     computed: {
         ...mapState(useStore, ["currentUser", "isAdmin"]),
@@ -71,7 +76,7 @@ export default {
                 this.$emit("getUsers");
             });
         },
-        getUrl(isEdit) {
+        getUrl(isEdit: boolean) {
             let url = "/user/item/";
             if (isEdit) {
                 url += "edit/";

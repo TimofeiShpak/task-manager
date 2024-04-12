@@ -6,9 +6,15 @@
 
 <script lang="ts">
 import { STATUS_TYPE_NAME } from "~/helpers/constants";
+import type { PropType } from "vue"
+import type { Task } from "~/helpers/types"
+
 export default {
     props: {
-        item: Object,
+        item: {
+            type: Object as PropType<Task>,
+            required: true
+        },
     },
     computed: {
         status() {

@@ -1,30 +1,30 @@
-export default (api) => {
+export default (api: any) => {
     return {
-        getProject: (data) => {
+        getProject: (data: any) => {
             return api('/api/projects/getProject', {
                 method: 'POST',
                 body: data,
             })
         },
-        getList: (data) => {
+        getList: (data: any) => {
             return api('/api/projects/getList', {
                 method: 'POST',
                 body: data,
             })
         },
-        create: (data) => {
+        create: (data: any) => {
             return api('/api/projects/create', {
                 method: 'POST',
                 body: data,
             })
         },
-        edit: (data) => {
+        edit: (data: any) => {
             return api('/api/projects/edit', {
                 method: 'POST',
                 body: data,
             })
         },
-        delete: (data) => {
+        delete: (data: any) => {
             return api('/api/projects/delete', {
                 method: 'POST',
                 body: data,

@@ -20,15 +20,16 @@
 
 <script lang="ts">
 import { mapState, mapActions } from "pinia";
+import type { User } from "~/helpers/types"
 
 export default {
     data() {
         return {
-            userData: {},
+            userData: {} as User,
             isNew: false,
             isEdit: false,
             isInited: false,
-            id: null,
+            id: '',
         };
     },
     computed: {
@@ -42,7 +43,7 @@ export default {
     },
     methods: {
         ...mapActions(useStore, ["setCurrentUser", "fetchUser", "setUser"]),
-        onSave(value) {
+        onSave(value: User) {
             if (this.isCurrent) {
                 this.setCurrentUser(value);
             } else {
@@ -69,7 +70,7 @@ export default {
         if (type === "new") {
             this.isNew = true;
         } else {
-            this.fetchUser(id).then((data) => {
+            this.fetchUser(id).then((data: User) => {
                 this.userData = data;
             });
         }

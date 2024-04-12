@@ -16,8 +16,8 @@ export default defineWrappedResponseHandler(async (event) => {
     } else {
         dto.name = new RegExp(dto.name)
     }
-    let sortDirection = options.sort.type === TYPE_SORT.DESC ? -1 : 1;
-    let sortOptions = {};
+    let sortDirection = options.sort.type === TYPE_SORT.DESC ? -1 : 1 as -1 | 1;
+    let sortOptions = {} as { [key: string]: -1 | 1 };
     sortOptions[options.sort.attribute] = sortDirection;
 
     const items = await tasks.find(dto)
@@ -32,12 +32,19 @@ export default defineWrappedResponseHandler(async (event) => {
 
     const dtoProjects = { _id: { $in: projectIds.map(x => new mongoose.Types.ObjectId(x)) } }
     const projectsData = await projects.find(dtoProjects).select({ code: 1 });
-    const projectsMap = {};
-    projectsData.forEach(x => projectsMap[x.id] = x.code)
+    const projectsMap = {} as { [key: string]: string };
+    projectsData.forEach(x => projectsMap[x.id] = x.code as string)
     const itemsWithCodes = items.map(x => {
         let item = prepareTaskData(x);
-        item.code = projectsMap[x.projectId];
-        return item;
+        if (x && x.projectId) {
+            let newItem = {
+                ...item,
+                code: projectsMap[x.projectId],
+            }
+            return newItem;
+        } else {
+            return item
+        }
     })
 
     return {

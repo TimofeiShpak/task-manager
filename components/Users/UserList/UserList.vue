@@ -33,11 +33,12 @@
 
 <script lang="ts">
 import { mapActions, mapState } from "pinia";
+import type { User } from "~/helpers/types";
 
 export default {
     data() {
         return {
-            users: [],
+            users: [] as Array<User>,
             limit: 2,
             total: 0,
             isInited: false,
@@ -72,25 +73,27 @@ export default {
                 page: this.page,
                 limit: this.limit,
             };
-            return Utils.fetchApi.users.getUserList(dto).then((data) => {
+            
+            type dataType = { response: { data: Array<User>, total: number } }
+            return Utils.fetchApi.users.getUserList(dto).then((data: dataType) => {
                 if (data && data.response) {
                     this.users = data.response.data || [];
                     this.total = data.response.total;
                 }
             });
         },
-        onSearch(value) {
+        onSearch(value: string) {
             this.setSearchText(value);
-            this.setPage(0);
+            this.goToPage(0);
         },
         addUser() {
             navigateTo("/user/new");
         },
-        onSort(value) {
+        onSort(value: string) {
             this.setSort(value);
-            this.setPage(0);
+            this.goToPage(0);
         },
-        goToPage(value) {
+        goToPage(value: number) {
             this.setPage(value);
             this.getUsers();
         },

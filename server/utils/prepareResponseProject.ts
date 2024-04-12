@@ -1,4 +1,4 @@
-export const prepareProjectData = (data) => {
+export const prepareProjectData = (data: any) => {
     if (data) {
         return {
             id: data._id,

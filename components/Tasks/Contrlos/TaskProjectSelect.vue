@@ -22,9 +22,14 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from "vue";
+import type { Project } from "~/helpers/types";
+
 export default {
     props: {
-        value: Object,
+        value: { 
+            type: Object as PropType<Project> | PropType<null>,
+        },
         selectClass: String,
         menuClass: String,
         isRules: Boolean,
@@ -35,7 +40,7 @@ export default {
         };
     },
     methods: {
-        onSelect(value) {
+        onSelect(value: Project) {
             this.$emit("update", value);
         },
     },

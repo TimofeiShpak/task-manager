@@ -3,6 +3,7 @@
         filled
         :type="type"
         :value="value"
+        :modelValue="value"
         @input="$emit('input', $event)"
         label="Password *"
         :rules="[Utils.checkByRules]"

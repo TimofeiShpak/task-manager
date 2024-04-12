@@ -30,23 +30,31 @@
   
 <script lang="ts">
 import { mapState } from "pinia";
+import type { PropType } from "vue"
+import type { Project } from "~/helpers/types"
 
 export default {
     props: {
         isOpen: Boolean,
-        item: Object,
+        item: {
+            type: Object as PropType<Project> | PropType<null>,
+        },
     },
     data() {
         return {
-            code: null,
-            name: null,
-            loadedCodes: [],
+            code: null as string | null,
+            name: null as string | null,
+            loadedCodes: [] as Array<string>,
         };
     },
     computed: {
         ...mapState(useStore, ["currentUser"]),
         isCodeExist() {
-            return this.loadedCodes.includes(this.code);
+            if (this.code) {
+                return this.loadedCodes.includes(this.code);
+            } else {
+                return false
+            }
         },
         isEdit() {
             return !!(this.item && this.item.id);
@@ -65,26 +73,36 @@ export default {
             this.reset();
         },
         submit() {
+            interface addintionalOptions {
+                id?: string;
+                editor?: string;
+                author?: string;
+            }
+
             let dto = {
                 code: this.code,
                 name: this.name,
-            };
+            } as addintionalOptions;
+
             let api = Utils.fetchApi.projects.create;
             if (this.isEdit) {
-                dto.id = this.item.id;
+                dto.id = this.item?.id;
                 dto.editor = this.currentUser.id;
                 api = Utils.fetchApi.projects.edit;
             } else {
                 dto.author = this.currentUser.id;
             }
-            api(dto).then((data) => {
+            api(dto).then((data: { response: Project }) => {
                 if (data && data.response) {
                     this.reset();
                     this.$emit("input", false);
                     this.$emit("save");
                 } else {
-                    this.loadedCodes.push(this.code);
-                    this.$refs.inputCode.validate();
+                    if (this.code) {
+                        this.loadedCodes.push(this.code);
+                        const inputCode = this.$refs.inputCode as any
+                        inputCode.validate();
+                    }
                 }
             });
         },
@@ -93,7 +111,7 @@ export default {
             this.name = null;
             this.loadedCodes = [];
         },
-        checkByRulesCode(val) {
+        checkByRulesCode(val: string | null) {
             if (this.isCodeExist) {
                 return "Project with given code already exists";
             } else {
@@ -103,7 +121,7 @@ export default {
     },
     watch: {
         isEdit(val) {
-            if (val) {
+            if (val && this.item) {
                 this.name = this.item.name;
                 this.code = this.item.code;
             } else {

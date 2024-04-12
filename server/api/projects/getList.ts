@@ -10,16 +10,16 @@ export default defineWrappedResponseHandler(async (event) => {
     } else {
         dto.name = new RegExp(dto.name)
     }
-    let sortOptions = {};
+    let sortOptions = {} as { [key: string]: -1 | 1 };
     if (options.sort) {
-        let sortDirection = options.sort.type === TYPE_SORT.DESC ? -1 : 1;
+        let sortDirection = options.sort.type === TYPE_SORT.DESC ? -1 : 1 as 1 | -1;
         sortOptions[options.sort.attribute] = sortDirection;
     } else {
         sortOptions[ATTRIBUTE_SORT.NAME] = 1;
     }
 
     if (options.idList) {
-        dto._id = { $in: options.idList.map(x => new mongoose.Types.ObjectId(x)) }
+        dto._id = { $in: options.idList.map((x: string) => new mongoose.Types.ObjectId(x)) }
     }
 
     const items = await projects.find(dto)

@@ -28,7 +28,7 @@ export default {
     data() {
         return {
             isSearched: false,
-            searchText: null,
+            searchText: "",
         };
     },
     computed: {
@@ -39,7 +39,7 @@ export default {
             get() {
                 return this.searchText;
             },
-            set(value) {
+            set(value: string) {
                 this.searchText = value;
             },
         },
@@ -50,8 +50,9 @@ export default {
             this.$emit("search", this.searchText);
         },
         clear() {
-            this.searchText = null;
-            this.$refs.input.blur();
+            this.searchText = "";
+            const input = this.$refs.input as HTMLInputElement;
+            input.blur();
             if (this.isSearched) {
                 this.isSearched = false;
                 this.$emit("search", "");

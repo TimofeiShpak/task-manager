@@ -98,11 +98,16 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from "vue"
+import type { User } from "~/helpers/types"
 import { mapState } from "pinia";
 
 export default {
     props: {
-        user: Object,
+        user: {
+            type: Object as PropType<User>,
+            required: true
+        },
         isCurrent: Boolean,
     },
     data() {
@@ -127,10 +132,10 @@ export default {
         editProfile() {
             this.$emit("editUser", this.user);
         },
-        changeConfirm(value) {
+        changeConfirm(value: boolean) {
             this.isOpenConfirm = !!value;
         },
-        changePassword(value) {
+        changePassword(value: boolean) {
             this.isOpenChangePassword = !!value;
         },
         deleteProfile() {

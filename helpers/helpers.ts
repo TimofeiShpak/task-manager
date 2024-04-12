@@ -1,4 +1,4 @@
-export const api = (url, options) => {
+export const api = (url: string, options: any) => {
     const { $togglePreloader } = useNuxtApp();
     let { isPreloader = true } = options;
     if (isPreloader) {
@@ -13,8 +13,8 @@ export const api = (url, options) => {
         })
 };
 
-export const dateToString = (date) => {
-    let difference = Date.now() - new Date(date);
+export const dateToString = (date: Date) => {
+    let difference = Date.now() - +new Date(date);
     const minutes = difference / 60 / 1000;
     if (minutes < 60) {
         return `${Math.ceil(minutes)} minutes ago`
@@ -28,6 +28,6 @@ export const dateToString = (date) => {
     }
 }
 
-export const checkByRules = (val) => {
+export const checkByRules = (val: string | null) => {
     return (val && val.length > 0) || "Please type something";
 }

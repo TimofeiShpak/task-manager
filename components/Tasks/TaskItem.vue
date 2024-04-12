@@ -38,11 +38,16 @@
 
 <script lang="ts">
 import { mapState } from "pinia";
+import type { PropType } from "vue"
+import type { Task } from "~/helpers/types"
 
 export default {
     inject: ["eventResize"],
     props: {
-        item: Object,
+        item: {
+            type: Object as PropType<Task>,
+            required: true,
+        },
         searchText: String,
     },
     data() {
@@ -95,8 +100,8 @@ export default {
         goToItem() {
             navigateTo(`/tasks/view/${this.item.id}`);
         },
-        checkWidthByKey(key) {
-            const elem = this.$refs[key];
+        checkWidthByKey(key: string) {
+            const elem = this.$refs[key] as HTMLElement;
             if (key === "name") {
                 this.tooltipName = elem.scrollHeight > elem.offsetHeight + 1;
             } else {

@@ -11,10 +11,10 @@ export default defineWrappedResponseHandler(async (event) => {
         dto.name = new RegExp(dto.name)
     }
     if (options.idList) {
-        dto._id = { $in: options.idList.map(x => new mongoose.Types.ObjectId(x)) }
+        dto._id = { $in: options.idList.map((x: string) => new mongoose.Types.ObjectId(x)) }
     }
 
-    let sortOptions = { name: 1 }
+    let sortOptions = { name: 1 } as { [key: string]: -1 | 1 }
     if (options.sort === TYPE_SORT.DESC) {
         sortOptions.name = -1
     }

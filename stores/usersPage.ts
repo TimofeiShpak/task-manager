@@ -1,19 +1,25 @@
 import { TYPE_SORT } from "~/helpers/constants";
 
+interface State {
+    page: number;
+    sort: string;
+    searchText: string;
+}
+
 export const useUsersPage = defineStore('useUsersPage', {
-    state: () => ({
+    state: (): State => ({
         page: 0,
         sort: TYPE_SORT.ASC,
-        searchText: null,
+        searchText: "",
     }),
     actions: {
-        setPage(value) {
+        setPage(value: number) {
             this.page = value
         },
-        setSort(value) {
+        setSort(value: string) {
             this.sort = value
         },
-        setSearchText(value) {
+        setSearchText(value: string) {
             this.searchText = value
         },
     }

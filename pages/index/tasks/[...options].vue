@@ -26,13 +26,14 @@
 
 <script lang="ts">
 import { mapActions } from "pinia";
+import type { Task, Project, User } from "~/helpers/types"
 
 export default {
     data() {
         return {
-            taskData: {},
-            projectData: {},
-            userData: [],
+            taskData: {} as Task,
+            projectData: {} as Project,
+            userData: [] as Array<User>,
             isNew: false,
             isEdit: false,
             isInited: false,
@@ -54,8 +55,8 @@ export default {
     },
     methods: {
         ...mapActions(useStore, ["fetchUserList"]),
-        fetchTask(id) {
-            Utils.fetchApi.tasks.getTask({ id }).then((data) => {
+        fetchTask(id: string) {
+            Utils.fetchApi.tasks.getTask({ id }).then((data: { response: Task }) => {
                 if (data && data.response) {
                     this.taskData = data.response;
                     if (this.taskData.projectId) {
@@ -65,25 +66,25 @@ export default {
                 }
             });
         },
-        fetchProject(id) {
-            Utils.fetchApi.projects.getProject({ id }).then((data) => {
+        fetchProject(id: string) {
+            Utils.fetchApi.projects.getProject({ id }).then((data: { response: Project }) => {
                 if (data && data.response) {
                     this.projectData = data.response;
                 }
             });
         },
-        fetchUsers(task) {
-            const uniqIds = new Set();
+        fetchUsers(task: Task) {
+            const uniqIds = new Set<string>();
             ["author", "executor", "editor"].forEach((x) => {
-                if (task[x]) {
-                    uniqIds.add(task[x]);
+                if (task[x as keyof Task]) {
+                    uniqIds.add(`${task[x as keyof Task]}`);
                 }
             });
-            this.fetchUserList([...uniqIds]).then((data) => {
+            this.fetchUserList([...uniqIds]).then((data: Array<User>) => {
                 this.userData = data;
             });
         },
-        onSave(value) {
+        onSave(value: Task) {
             navigateTo(`/tasks/view/${value.id}`);
         },
         onReset() {
@@ -93,7 +94,7 @@ export default {
                 navigateTo(`/tasks/view/${this.taskData.id}`);
             }
         },
-        update(value) {
+        update(value: Task) {
             this.taskData = value;
         },
     },

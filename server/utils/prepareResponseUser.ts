@@ -1,4 +1,4 @@
-export const prepareUserData = (userData) => {
+export const prepareUserData = (userData: any) => {
     if (userData) {
         return {
             id: userData._id,

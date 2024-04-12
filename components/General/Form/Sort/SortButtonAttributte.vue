@@ -12,10 +12,15 @@
 
 <script lang="ts">
 import { OPTIONS_SORT } from "~/helpers/constants";
+import type { PropType } from "vue"
+import type { Sort, AttributeSort } from "~/helpers/types";
 
 export default {
     props: {
-        value: Object,
+        value: {
+            type: Object as PropType<Sort>,
+            required: true,
+        },
     },
     data() {
         return {
@@ -27,7 +32,7 @@ export default {
             get() {
                 return this.value.attribute;
             },
-            set(value) {
+            set(value: Sort) {
                 this.$emit("input", {
                     type: this.value.type,
                     attribute: value,
@@ -36,7 +41,7 @@ export default {
         },
     },
     methods: {
-        onSortType(value) {
+        onSortType(value: AttributeSort) {
             this.$emit("input", {
                 type: value,
                 attribute: this.value.attribute,

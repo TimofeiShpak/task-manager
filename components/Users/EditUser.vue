@@ -77,18 +77,22 @@
 
 <script lang="ts">
 import { ROLE_TYPE } from "~/helpers/constants";
+import type { PropType } from "vue"
+import type { User } from "~/helpers/types"
 import { mapState } from "pinia";
 
 export default {
     props: {
-        user: Object,
+        user: {
+            type: Object as PropType<User>,
+        },
     },
     data() {
         return {
-            name: null,
-            email: null,
-            password: null,
-            aboutMe: null,
+            name: null as string | null,
+            email: null as string | null,
+            password: null as string | null,
+            aboutMe: null as string | null,
             isActive: true,
             role: ROLE_TYPE.USER,
             ROLE_TYPE,
@@ -112,13 +116,19 @@ export default {
     },
     methods: {
         onSubmit() {
+            interface additonalOPtions {
+                password?: string | null, 
+                id?: string | null
+            }
+
             let dto = {
                 name: this.name,
                 email: this.email,
                 aboutMe: this.aboutMe,
                 isActive: this.isActive,
                 role: this.role,
-            };
+            } as additonalOPtions;
+            
             let api = Utils.fetchApi.users.edit;
             if (!this.isEdit) {
                 dto.password = this.password;
@@ -127,7 +137,7 @@ export default {
                 dto.id = (this.user && this.user.id) || null;
             }
 
-            api(dto).then((data) => {
+            api(dto).then((data: { response: User }) => {
                 if (data && data.response) {
                     this.$emit("save", data.response);
                 }
@@ -142,11 +152,11 @@ export default {
     },
     mounted() {
         if (this.isEdit) {
-            this.name = this.user.name || null;
-            this.email = this.user.email || null;
-            this.aboutMe = this.user.aboutMe || null;
-            this.isActive = !!this.user.isActive;
-            this.role = this.user.role || ROLE_TYPE.USER;
+            this.name = this.user?.name || null;
+            this.email = this.user?.email || null;
+            this.aboutMe = this.user?.aboutMe || null;
+            this.isActive = !!this.user?.isActive;
+            this.role = this.user?.role || ROLE_TYPE.USER;
         }
     },
 };

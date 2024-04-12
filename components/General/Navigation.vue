@@ -69,7 +69,8 @@ export default {
             return id === this.currentUser.id;
         },
         profileClass() {
-            if (this.route.name.startsWith("index-user-options")) {
+            const routeName = this.route.name as string
+            if (routeName.startsWith("index-user-options")) {
                 return "profile-active";
             }
         },
@@ -82,9 +83,6 @@ export default {
         logOut() {
             this.resetCurrentUser();
             navigateTo("/");
-        },
-        goTo(to) {
-            navigateTo(to);
         },
     },
 };

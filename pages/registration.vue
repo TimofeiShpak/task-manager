@@ -51,6 +51,7 @@
 <script lang="ts">
 import { mapActions } from "pinia";
 import { ROLE_TYPE } from "~/helpers/constants";
+import type { User } from "~/helpers/types";
 
 export default {
     data() {
@@ -63,7 +64,11 @@ export default {
     },
     computed: {
         isEmailExist() {
-            return this.loadedEmails.includes(this.email);
+            if (this.email) {
+                return this.loadedEmails.includes(this.email);
+            } else {
+                return false
+            }
         },
     },
     methods: {
@@ -77,13 +82,16 @@ export default {
                 isActive: true,
                 role: ROLE_TYPE.ADMIN,
             };
-            Utils.fetchApi.users.create(dto).then((data) => {
+            Utils.fetchApi.users.create(dto).then((data: { response: User }) => {
                 if (data && data.response) {
                     this.setCurrentUser(data.response);
                     navigateTo("/");
                 } else {
-                    this.loadedEmails.push(this.email);
-                    this.$refs.emailInput.validate();
+                    if (this.email) {
+                        this.loadedEmails.push(this.email);
+                        const emailInput = this.$refs.emailInput as any
+                        emailInput.validate();
+                    }
                 }
             });
         },
@@ -95,7 +103,7 @@ export default {
         goToAuthorization() {
             navigateTo("/authorization");
         },
-        checkByRulesEmail(val) {
+        checkByRulesEmail(val: string | null) {
             if (this.isEmailExist) {
                 return "User with given email already exists";
             } else {

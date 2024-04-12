@@ -54,10 +54,15 @@
 
 <script lang="ts">
 import { mapState } from "pinia";
+import type { PropType } from "vue"
+import type { Task } from "~/helpers/types"
 
 export default {
     props: {
-        task: Object,
+        task: {
+            type: Object as PropType<Task>,
+            required: true
+        },
         project: Object,
     },
     computed: {
@@ -79,6 +84,8 @@ export default {
             if (this.task.author) {
                 const author = this.getUserById(this.task.author);
                 return author || null;
+            } else {
+                return null
             }
         },
         editedText() {
@@ -93,6 +100,8 @@ export default {
             if (this.task.editor) {
                 const editor = this.getUserById(this.task.editor);
                 return editor || null;
+            } else {
+                return null
             }
         },
         isAuthor() {
@@ -109,7 +118,7 @@ export default {
         deleteTask() {
             navigateTo("/tasks/list");
         },
-        update(value) {
+        update(value: Task) {
             this.$emit("update", value);
         },
     },

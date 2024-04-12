@@ -6,12 +6,13 @@
 </template>
 
 <script lang="ts">
-import { mapActions } from "pinia";
 import "~/helpers/registerIcons";
+import { ref } from 'vue'
+import type { Ref } from 'vue'
 
 export default {
     setup() {
-        const eventResize = ref(0);
+        const eventResize = ref(null) as Ref<Event> | Ref<null>;
         provide("eventResize", eventResize);
 
         return {
@@ -19,17 +20,17 @@ export default {
         };
     },
     mounted() {
-        this.throttleResize = _.throttle(this.handleResize, 100);
+        this.throttleResize = useThrottle(this.handleResize, 100);
         window.addEventListener("resize", this.throttleResize);
     },
     data() {
         return {
             eventScroll: {},
+            throttleResize: null as any,
         };
     },
     methods: {
-        ...mapActions(useStore, ["windowResize"]),
-        handleResize(event) {
+        handleResize(event: Event) {
             this.eventResize = event;
         },
     },

@@ -40,9 +40,15 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from "vue"
+import type { Task } from "~/helpers/types"
+
 export default {
     props: {
-        task: Object,
+        task: { 
+            type: Object as PropType<Task>,
+            required: true,
+        },
     },
     data() {
         return {
@@ -50,7 +56,7 @@ export default {
         };
     },
     methods: {
-        changeConfirm(value) {
+        changeConfirm(value: boolean) {
             this.isOpenConfirm = !!value;
         },
         deleteItem() {

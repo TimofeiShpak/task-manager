@@ -78,11 +78,16 @@
 
 <script lang="ts">
 import { mapActions, mapState } from "pinia";
+import type { PropType } from "vue"
+import type { Project } from "~/helpers/types"
 
 export default {
     inject: ["eventResize"],
     props: {
-        item: Object,
+        item: {
+            type: Object as PropType<Project>,
+            required: true,
+        },
         searchText: String,
     },
     data() {
@@ -137,15 +142,15 @@ export default {
         editItem() {
             this.$emit("editItem", this.item);
         },
-        checkWidthByKey(key) {
-            const elem = this.$refs[key];
+        checkWidthByKey(key: string) {
+            const elem = this.$refs[key] as HTMLElement;
             if (key === "name") {
                 this.tooltipName = elem.scrollHeight > elem.offsetHeight + 1;
             } else {
                 this.tooltipCode = elem.scrollWidth > elem.offsetWidth;
             }
         },
-        changeConfirm(value) {
+        changeConfirm(value: boolean) {
             this.isOpenConfirm = !!value;
         },
         deleteItem() {

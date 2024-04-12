@@ -5,9 +5,15 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from "vue"
+import type { Link } from "~/helpers/types"
+
 export default {
     props: {
-        link: Object,
+        link: {
+            type: Object as PropType<Link>,
+            required: true,
+        },
     },
 };
 </script>

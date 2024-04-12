@@ -17,7 +17,8 @@ export const ATTRIBUTE_SORT_NAME = {
     DATE_EDITED: 'Date edited',
 }
 
-export const OPTIONS_SORT = Object.keys(ATTRIBUTE_SORT).map((x) => {
+const keys = Object.keys(ATTRIBUTE_SORT) as Array<keyof typeof ATTRIBUTE_SORT>
+export const OPTIONS_SORT = keys.map((x) => {
     return {
         label: ATTRIBUTE_SORT_NAME[x],
         value: ATTRIBUTE_SORT[x],

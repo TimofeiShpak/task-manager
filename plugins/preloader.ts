@@ -2,7 +2,7 @@ export default defineNuxtPlugin({
 	async setup(nuxtApp) {
 		const isPreloader = ref(true)
 		const countPreloader = ref(1)
-		const togglePreloader = (value) => {
+		const togglePreloader = (value: boolean) => {
 			if (value) {
 				if (countPreloader.value < 1) {
 					isPreloader.value = true;

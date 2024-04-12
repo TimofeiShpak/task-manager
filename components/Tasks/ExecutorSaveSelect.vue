@@ -9,28 +9,32 @@
 
 <script lang="ts">
 import { mapState } from "pinia";
+import type { PropType } from "vue"
+import type { User, Task } from "~/helpers/types"
 
 export default {
     props: {
-        task: Object,
+        task: {
+            type: Object as PropType<Task> | PropType<null>,
+        },
     },
     data() {
         return {
-            executor: null,
+            executor: null as User | null,
         };
     },
     computed: {
         ...mapState(useStore, ["getUserById", "currentUser"]),
     },
     methods: {
-        onSelectExecutor(value) {
+        onSelectExecutor(value: User) {
             this.executor = value;
             let dto = {
                 executor: value.id,
-                id: this.task.id,
+                id: this.task?.id,
                 editor: this.currentUser.id,
             };
-            Utils.fetchApi.tasks.edit(dto).then((data) => {
+            Utils.fetchApi.tasks.edit(dto).then((data: { response: Task }) => {
                 if (data && data.response) {
                     this.$emit("update", data.response);
                 }
@@ -38,7 +42,7 @@ export default {
         },
     },
     mounted() {
-        if (this.task.executor) {
+        if (this.task && this.task.executor) {
             const executor = this.getUserById(this.task.executor);
             if (executor) {
                 this.executor = executor;

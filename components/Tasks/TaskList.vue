@@ -36,11 +36,12 @@
 
 <script lang="ts">
 import { mapActions, mapState } from "pinia";
+import type { TaskFilter, Sort, Task, Project, Status } from "~/helpers/types"
 
 export default {
     data() {
         return {
-            tasks: [],
+            tasks: [] as Task[],
             limit: 2,
             total: 0,
             isInited: false,
@@ -81,19 +82,19 @@ export default {
             }
         },
         getValuesFromFilters() {
-            const dto = {};
+            const dto = {} as TaskFilter;
             if (this.filter) {
-                for (let key in this.filter) {
-                    if (this.filter[key]) {
-                        dto[key] =
-                            this.filter[key].id || this.filter[key].value;
+                let key: keyof typeof this.filter
+                for (key in this.filter) {
+                    const value = this.filter[key] as any
+                    if (value) {
+                        dto[key] = value && (value.id || value?.value);
                     }
                 }
             }
             return dto;
         },
         getList() {
-            console.log(this.getValuesFromFilters());
             this.checkPage();
             let dto = {
                 data: {
@@ -107,7 +108,9 @@ export default {
                 page: this.page,
                 limit: this.limit,
             };
-            return Utils.fetchApi.tasks.getList(dto).then((data) => {
+
+            type dataType = { response: { data: Array<Task>, total: number } }
+            return Utils.fetchApi.tasks.getList(dto).then((data: dataType) => {
                 if (data && data.response) {
                     this.tasks = data.response.data || [];
                     this.total = data.response.total;
@@ -116,7 +119,7 @@ export default {
             });
         },
         getUsersProjects() {
-            const idSet = new Set();
+            const idSet = new Set<string>();
             this.tasks.forEach((x) => {
                 if (x.author && !idSet.has(x.author)) {
                     idSet.add(x.author);
@@ -130,28 +133,27 @@ export default {
                 this.fetchUserList(idList);
             }
         },
-        onSearch(value) {
+        onSearch(value: string) {
             this.setSearchText(value);
-            this.setPage(0);
+            this.goToPage(0);
         },
         addItem() {
             navigateTo("/tasks/new");
         },
-        onSort(value) {
+        onSort(value: Sort) {
             this.setSort(value);
-            this.setPage(0);
+            this.goToPage(0);
         },
-        goToPage(value) {
+        goToPage(value: number) {
             this.setPage(value);
             this.getList();
         },
         onSave() {
             this.getList();
         },
-        updateFilter(value) {
+        updateFilter(value: TaskFilter) {
             this.setFilter(Object.assign({}, value));
-            this.setPage(0);
-            this.getList();
+            this.goToPage(0);
         },
     },
     mounted() {

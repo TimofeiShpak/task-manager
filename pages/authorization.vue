@@ -42,6 +42,7 @@
 
 <script lang="ts">
 import { mapActions } from "pinia";
+import type { User } from "~/helpers/types";
 
 export default {
     data() {
@@ -57,13 +58,14 @@ export default {
             this.isError = false;
             Utils.fetchApi.users
                 .getUser({ email: this.email, password: this.password })
-                .then((data) => {
+                .then((data: { response: User }) => {
                     if (data && data.response) {
                         this.setCurrentUser(data.response);
                         navigateTo("/");
                     } else {
                         this.isError = true;
-                        this.$refs.myForm.value.validate();
+                        const myForm = this.$refs.myForm as any
+                        myForm.value.validate();
                     }
                 });
         },

@@ -47,12 +47,13 @@
 
 <script lang="ts">
 import { mapActions, mapState } from "pinia";
+import type { Sort, Project } from "~/helpers/types"
 
 export default {
     data() {
         return {
-            projects: [],
-            editedData: {},
+            projects: [] as Array<Project>,
+            editedData: {} as Project | null,
             limit: 2,
             total: 0,
             isOpenEdit: false,
@@ -101,7 +102,9 @@ export default {
                 page: this.page,
                 limit: this.limit,
             };
-            return Utils.fetchApi.projects.getList(dto).then((data) => {
+
+            type dataType = { response: { data: Array<Project>, total: number } }
+            return Utils.fetchApi.projects.getList(dto).then((data: dataType) => {
                 if (data && data.response) {
                     this.projects = data.response.data || [];
                     this.total = data.response.total;
@@ -110,7 +113,7 @@ export default {
             });
         },
         getUsersProjects() {
-            const idSet = new Set();
+            const idSet = new Set<string>();
             this.projects.forEach((x) => {
                 if (x.author && !idSet.has(x.author)) {
                     idSet.add(x.author);
@@ -124,28 +127,28 @@ export default {
                 this.fetchUserList(idList);
             }
         },
-        onSearch(value) {
+        onSearch(value: string) {
             this.setSearchText(value);
-            this.setPage(0);
+            this.goToPage(0);
         },
-        toggleEdit(value) {
+        toggleEdit(value: boolean) {
             this.isOpenEdit = value;
             if (!value) {
-                this.editedData = {};
+                this.editedData = null;
             }
         },
-        onSort(value) {
+        onSort(value: Sort) {
             this.setSort(value);
-            this.setPage(0);
+            this.goToPage(0);
         },
-        goToPage(value) {
+        goToPage(value: number) {
             this.setPage(value);
             this.getList();
         },
         onSave() {
             this.getList();
         },
-        editItem(value) {
+        editItem(value: Project) {
             this.toggleEdit(true);
             this.editedData = value;
         },

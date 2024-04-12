@@ -28,7 +28,7 @@ export default {
         styles() {
             var width = this.width || this.size,
                 height = this.height || this.size,
-                style = {};
+                style = {} as {width?: string, height?: string};
 
             if (width) {
                 style.width = width;

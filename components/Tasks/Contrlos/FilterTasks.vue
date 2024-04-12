@@ -43,23 +43,29 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from "vue"
+import type { Project, TaskFilter, Status } from "~/helpers/types"
+
 export default {
     props: {
-        value: Object,
+        value: {
+            type: Object as PropType<TaskFilter>,
+            required: true,
+        },
     },
     data() {
         return {
             filter: {
                 project: null,
                 status: null,
-            },
+            } as TaskFilter,
         };
     },
     methods: {
-        onUpdateProject(value) {
+        onUpdateProject(value: Project) {
             this.filter.project = value;
         },
-        onUpdateStatus(value) {
+        onUpdateStatus(value: Status) {
             this.filter.status = value;
         },
         clear() {
@@ -71,7 +77,8 @@ export default {
         },
         apply() {
             this.$emit("update", this.filter);
-            this.$refs.filter.hide();
+            const filter = this.$refs.filter as any;
+            filter.hide();
         },
     },
     mounted() {
